@@ -4,31 +4,31 @@
 #include <iostream>
 #include <string>
 #include <stdlib.h>
+#include <sstream>
 
 using namespace std;
 using namespace AST;
 
-void do_esterel_v5_simulator(std::ostream &o, Module *mod,
-			     unsigned int seed, int cycles,
-			     string basename)
+std::string do_esterel_v5_simulator(Module *mod, unsigned int seed
+    , int cycles, string basename)
 {
+  stringstream o;
   string mn = mod->symbol->name;
 
-  o <<
-    "#  include <time.h>"       "\n"
-    "#ifdef H8" "\n"
-    "#  include <conio.h>" "\n"
-    "#else" "\n"
-    "#  include <stdio.h>"      "\n"
-    "#  include <stdlib.h>"     "\n"
-    "#endif" "\n"
-    "typedef char boolean;"   "\n"
-    "typedef int integer;"    "\n"
-    "typedef char* string;"   "\n"
-    "#  define STRLEN 81"       "\n"
-    "char *argv0;"            "\n"
-    "#  define MAIN" "\n"
-    "\n";
+  o << "#  include <time.h>"       << endl;
+  o << "#ifdef H8" << endl;
+  o << "#  include <conio.h>" << endl;
+  o << "#else" << endl;
+  o << "#  include <stdio.h>"      << endl;
+  o << "#  include <stdlib.h>"     << endl;
+  o << "#endif" << endl;
+  o << "typedef char boolean;"   << endl;
+  o << "typedef int integer;"    << endl;
+  o << "typedef char* string;"   << endl;
+  o << "#  define STRLEN 81"       << endl;
+  o << "char *argv0;"            << endl;
+  o << "#  define MAIN" << endl;
+  o << endl;;
 
   CPrinter::Printer p(o, *mod, false);
   p.printInclude(basename);
@@ -199,6 +199,13 @@ void do_esterel_v5_simulator(std::ostream &o, Module *mod,
     "\n"
     "int main(int argc, char *argv[])"    "\n"
     "{"    "\n"
+    /*  Modification made by dilawar */
+    "  if (argc == 1) " "\n"
+    "  { " "\n"
+    "     fprintf(stderr, \"Usage: %s [-c <cycles>] [-t <testvector file>] [-b]\\n\", argv0);"    "\n"
+    "     fprintf(stderr, \"Warning : Using random inputs. Press any key to continue .. \"); " "\n" 
+    "     getchar(); " "\n"
+    "  }" "\n"
     "  int active, ntick, maxtick = -1;"    "\n"
     "  int benchtick = 0;"                  "\n"
     "#ifdef H8" "\n"
@@ -322,6 +329,7 @@ void do_esterel_v5_simulator(std::ostream &o, Module *mod,
     "#endif" "\n"
     "  return 0;"    "\n"
     "}"    "\n";
+  return o.str();
 }
 
 struct Usage {};
@@ -368,7 +376,8 @@ int main(int argc, char* argv[])
     SymbolTable *sig = dynamic_cast<AST::SymbolTable*>(m->signals);
     assert(sig);
       
-    do_esterel_v5_simulator(std::cout, m, seed, cycles, basename);
+    std::cout << do_esterel_v5_simulator(m, seed, cycles, basename);
+    
 
   } catch (IR::Error &e) {
     std::cerr << e.s << std::endl;

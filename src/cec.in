@@ -541,7 +541,7 @@ if [ ! -z "$strlfile" ] ; then
 	    Run $PDGCCFG $pdgfile $ccfgfile
 	    Run $EEC $ccfgfile $scfgfile
 	    Run "$SCFGC -B $basename" $scfgfile $cfile
-        RunVerb "$MAINCPROG -B $basename" "<" $optfile ">" $cfile.main
+        RunVerb "$MAINCPROG -B $basename" "<" $optfile ">" $basename.main.c
 	    keepc=1
 	    ;;
 	lists-goto)
@@ -552,13 +552,13 @@ if [ ! -z "$strlfile" ] ; then
 	    Run "$GRCC -B $basename -a" $optfile $cfile
 	    keepc=1
 	    ;;
-        vm)
-            DumpVM > $cfile
-            Run $GRCBAL $optfile $balfile
+    vm)
+        DumpVM > $cfile
+        Run $GRCBAL $optfile $balfile
 	    RunVerb $BALASM --c "<" $balfile ">>" $cfile
 	    RunVerb "$VMWRAPPER -B $basename" "<" $optfile ">>" $cfile
-            keepc=1
-            ;;
+        keepc=1
+        ;;
     esac
 fi
 
