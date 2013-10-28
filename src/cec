@@ -50,6 +50,7 @@ GRCC=${EXEDIR}/cec-grcc2
 GRCBAL=${EXEDIR}/cec-grcbal
 BALASM=${EXEDIR}/cec-balasm
 VMWRAPPER=${EXEDIR}/cec-vm-wrapper
+MAINCPROG=${EXEDIR}/cec-v5-cmain
 
 BALVM=${EXEDIR}/balvm.c
 
@@ -429,7 +430,7 @@ while [ $# -ne 0 ] ; do
 	    shift
 	    ;;
 	x--vm-only)
-            DumpVM
+        DumpVM
 	    exit 0
 	    ;;
 	x--eachcmd) # Specify a time command
@@ -540,6 +541,7 @@ if [ ! -z "$strlfile" ] ; then
 	    Run $PDGCCFG $pdgfile $ccfgfile
 	    Run $EEC $ccfgfile $scfgfile
 	    Run "$SCFGC -B $basename" $scfgfile $cfile
+        RunVerb "$MAINCPROG -B $basename" "<" $optfile ">" $cfile.main
 	    keepc=1
 	    ;;
 	lists-goto)
