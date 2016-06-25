@@ -484,12 +484,12 @@ s,@INSTALL_DATA@,${INSTALL} -m 644,;t t
 s,@CYGPATH_W@,echo,;t t
 s,@PACKAGE@,cec,;t t
 s,@VERSION@,0.4,;t t
-s,@ACLOCAL@,${SHELL} /home/dilawars/Work/GITHUB/DILAWAR/cec/missing --run aclocal-1.9,;t t
-s,@AUTOCONF@,${SHELL} /home/dilawars/Work/GITHUB/DILAWAR/cec/missing --run autoconf,;t t
-s,@AUTOMAKE@,${SHELL} /home/dilawars/Work/GITHUB/DILAWAR/cec/missing --run automake-1.9,;t t
-s,@AUTOHEADER@,${SHELL} /home/dilawars/Work/GITHUB/DILAWAR/cec/missing --run autoheader,;t t
-s,@MAKEINFO@,${SHELL} /home/dilawars/Work/GITHUB/DILAWAR/cec/missing --run makeinfo,;t t
-s,@install_sh@,/home/dilawars/Work/GITHUB/DILAWAR/cec/install-sh,;t t
+s,@ACLOCAL@,${SHELL} /home1/dilawars/Work/GITHUB/DILAWAR/cec/missing --run aclocal-1.9,;t t
+s,@AUTOCONF@,${SHELL} /home1/dilawars/Work/GITHUB/DILAWAR/cec/missing --run autoconf,;t t
+s,@AUTOMAKE@,${SHELL} /home1/dilawars/Work/GITHUB/DILAWAR/cec/missing --run automake-1.9,;t t
+s,@AUTOHEADER@,${SHELL} /home1/dilawars/Work/GITHUB/DILAWAR/cec/missing --run autoheader,;t t
+s,@MAKEINFO@,${SHELL} /home1/dilawars/Work/GITHUB/DILAWAR/cec/missing --run makeinfo,;t t
+s,@install_sh@,/home1/dilawars/Work/GITHUB/DILAWAR/cec/install-sh,;t t
 s,@STRIP@,,;t t
 s,@ac_ct_STRIP@,,;t t
 s,@INSTALL_STRIP_PROGRAM@,${SHELL} $(install_sh) -c -s,;t t
@@ -497,7 +497,7 @@ s,@mkdir_p@,mkdir -p --,;t t
 s,@AWK@,gawk,;t t
 s,@SET_MAKE@,,;t t
 s,@am__leading_dot@,.,;t t
-s,@AMTAR@,${SHELL} /home/dilawars/Work/GITHUB/DILAWAR/cec/missing --run tar,;t t
+s,@AMTAR@,${SHELL} /home1/dilawars/Work/GITHUB/DILAWAR/cec/missing --run tar,;t t
 s,@am__tar@,${AMTAR} chof - "$$tardir",;t t
 s,@am__untar@,${AMTAR} xf -,;t t
 s,@CC@,gcc,;t t
@@ -526,8 +526,8 @@ s,@RANLIB@,ranlib,;t t
 s,@ac_ct_RANLIB@,ranlib,;t t
 s,@CXXCPP@,g++ -E,;t t
 s,@EGREP@,grep -E,;t t
-s,@NOTANGLE@,,;t t
-s,@NOWEAVE@,,;t t
+s,@NOTANGLE@,/usr/local/bin/notangle,;t t
+s,@NOWEAVE@,/usr/local/bin/noweave,;t t
 s,@ANTLR@,,;t t
 s,@LIBOBJS@,,;t t
 s,@LTLIBOBJS@,,;t t
