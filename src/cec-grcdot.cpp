@@ -1,4 +1,3 @@
-#line 472 "GRCPrinter.nw"
 #include "IR.hpp"
 #include "AST.hpp"
 #include "GRCPrinter.hpp"

@@ -1,4 +1,3 @@
-#line 3248 "ASTGRC.nw"
 #include "IR.hpp"
 #include "AST.hpp"
 #include <stdio.h>

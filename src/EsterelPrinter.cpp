@@ -1,4 +1,3 @@
-#line 144 "EsterelPrinter.nw"
 #include "EsterelPrinter.hpp"
 #include <cassert>
 

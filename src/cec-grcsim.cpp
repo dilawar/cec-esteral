@@ -1,4 +1,3 @@
-#line 1018 "GRCsim.nw"
 #include "GRCsim.hpp"
 #include <fstream>
 

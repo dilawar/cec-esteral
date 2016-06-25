@@ -1,4 +1,3 @@
-#line 985 "GRCsim.nw"
 #ifndef _GRCSIM_HPP
 #  define _GRCSIM_HPP
 
@@ -15,7 +14,6 @@ namespace AST {
 using std::set;
 using std::map;
 
-#line 566 "GRCsim.nw"
 class GRCsim: public Visitor {
   
   int debug;
@@ -95,38 +93,26 @@ class GRCsim: public Visitor {
   void execute_vectors(std::istream &);
   int doswitch(STNode *n);  
 
-  
-#line 32 "GRCsim.nw"
-Status visit(Fork &);
-#line 50 "GRCsim.nw"
-Status visit(Terminate &);
-#line 69 "GRCsim.nw"
-Status visit(Sync &);
-#line 156 "GRCsim.nw"
-void setState(STNode *n, bool isInit);
-#line 224 "GRCsim.nw"
-Status visit(Enter &);
-#line 240 "GRCsim.nw"
-Status visit(STSuspend &);
-#line 257 "GRCsim.nw"
-Status visit(Action &);
-Status visit(Emit &);
-Status visit(Exit &);
-Status visit(Assign &);
-Status visit(StartCounter &);
-Status visit(Nop &);
-#line 543 "GRCsim.nw"
-Status visit(DefineSignal &);
-#line 681 "GRCsim.nw"
-int intVal(ASTNode *n)
-{
-  assert(n);
-  Status s = n->welcome(*this);
-  return s.i; // Integer-valued result
-}
-#line 646 "GRCsim.nw"
+  Status visit(Fork &);
+  Status visit(Terminate &);
+  Status visit(Sync &);
+  void setState(STNode *n, bool isInit);
+  Status visit(Enter &);
+  Status visit(STSuspend &);
+  Status visit(Action &);
+  Status visit(Emit &);
+  Status visit(Exit &);
+  Status visit(Assign &);
+  Status visit(StartCounter &);
+  Status visit(Nop &);
+  Status visit(DefineSignal &);
+  int intVal(ASTNode *n)
+  {
+    assert(n);
+    Status s = n->welcome(*this);
+    return s.i; // Integer-valued result
+  }
 };
 
-#line 1003 "GRCsim.nw"
 }
 #endif

@@ -1,4 +1,3 @@
-#line 1200 "EsterelPrinter.nw"
 #include "IR.hpp"
 #include "AST.hpp"
 #include "EsterelPrinter.hpp"

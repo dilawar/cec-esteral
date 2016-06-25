@@ -1,4 +1,3 @@
-#line 27 "EsterelPrinter.nw"
 #ifndef _ESTEREL_PRINTER_HPP
 #  define _ESTEREL_PRINTER_HPP
 

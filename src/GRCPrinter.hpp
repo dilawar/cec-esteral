@@ -1,4 +1,3 @@
-#line 357 "GRCPrinter.nw"
 #ifndef _GRC_PRINTER_HPP
 #  define _GRC_PRINTER_HPP
 #  include "AST.hpp"
@@ -41,31 +40,25 @@ namespace GRCDot {
     bool drawstlink;
     bool clean;
 
-    
-#line 32 "GRCPrinter.nw"
-void visit_cfg(GRCNode *);
-#line 114 "GRCPrinter.nw"
-Status visit(Switch &);
-Status visit(Test &);
-Status visit(Terminate &);
-Status visit(Sync &);
-Status visit(Fork &);
-Status visit(Action &);
-Status visit(Enter &);
-Status visit(STSuspend &);
-Status visit(EnterGRC &);
-Status visit(ExitGRC &);
-Status visit(Nop &);
-Status visit(DefineSignal &);
-#line 271 "GRCPrinter.nw"
-void visit_st(STNode *);
-#line 303 "GRCPrinter.nw"
-Status visit(STexcl &);
-Status visit(STref &);
-Status visit(STpar &);
-Status visit(STleaf &);
+    void visit_cfg(GRCNode *);
+    Status visit(Switch &);
+    Status visit(Test &);
+    Status visit(Terminate &);
+    Status visit(Sync &);
+    Status visit(Fork &);
+    Status visit(Action &);
+    Status visit(Enter &);
+    Status visit(STSuspend &);
+    Status visit(EnterGRC &);
+    Status visit(ExitGRC &);
+    Status visit(Nop &);
+    Status visit(DefineSignal &);
+    void visit_st(STNode *);
+    Status visit(STexcl &);
+    Status visit(STref &);
+    Status visit(STpar &);
+    Status visit(STleaf &);
 
-#line 401 "GRCPrinter.nw"
     void drawSTlink(GRCNode *, STNode *);
   };
 };

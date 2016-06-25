@@ -263,7 +263,7 @@ class "Delay : Expression
   Counter *counter;
 
   Delay(TypeSymbol *t, Expression *e1, Expression *e2,
-         bool i, Counter *c)
+	 bool i, Counter *c)
    : Expression(t), predicate(e1), count(e2), is_immediate(i), counter(c) {}"
 class "CheckCounter : Expression
   Counter *counter;
@@ -554,17 +554,17 @@ abstract "GRCNode : ASTNode
       number[this] = next++;
     }
     for (vector<GRCNode*>::const_iterator i = successors.begin();
-          i != successors.end() ; i++)
-                if (*i) next = (*i)->enumerate(number, visited, next);
+	  i != successors.end() ; i++)
+        	if (*i) next = (*i)->enumerate(number, visited, next);
     for (vector<GRCNode*>::const_iterator i = predecessors.begin();
-           i != predecessors.end() ; i++)
-                if(*i) next = (*i)->enumerate(number, visited, next);
+	   i != predecessors.end() ; i++)
+        	if(*i) next = (*i)->enumerate(number, visited, next);
     for (vector<GRCNode*>::const_iterator i = dataSuccessors.begin();
-           i != dataSuccessors.end() ; i++)
-                if(*i) next = (*i)->enumerate(number, visited, next);
+	   i != dataSuccessors.end() ; i++)
+        	if(*i) next = (*i)->enumerate(number, visited, next);
     for (vector<GRCNode*>::const_iterator i = dataPredecessors.begin();
-           i != dataPredecessors.end() ; i++)
-                if(*i) next = (*i)->enumerate(number, visited, next);      
+	   i != dataPredecessors.end() ; i++)
+ 		if(*i) next = (*i)->enumerate(number, visited, next);      
     return next;
   }
 "
@@ -655,10 +655,10 @@ abstract "STNode : ASTNode
     visited.insert(this);
 
     if(number.find(this) == number.end() || number[this] == 0){
-        number[this] = next++;
+       	number[this] = next++;
     }
     for (vector<STNode*>::const_iterator i = children.begin() ;
-         i != children.end() ; i++) if(*i)
+	 i != children.end() ; i++) if(*i)
       next = (*i)->enumerate(number, visited,  next);
     return next;
   }

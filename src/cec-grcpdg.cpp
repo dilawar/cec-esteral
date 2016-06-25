@@ -1,4 +1,3 @@
-#line 1398 "GRCPDG.nw"
 #include "IR.hpp"
 #include "AST.hpp"
 
@@ -14,16 +13,13 @@ using namespace std;
 typedef map<GRCNode *, int> CFGmap;
 typedef map<STNode *, int> STmap;
 
-#line 33 "GRCPDG.nw"
 template <class T> bool contains(set<T> &s, T o) {
   return s.find(o) != s.end();
 }
-#line 39 "GRCPDG.nw"
 template <class T, class U> bool contains(map<T, U> &m, T o) {
   return m.find(o) != m.end();
 }
 
-#line 47 "GRCPDG.nw"
 class STDPS {
   EnterGRC *entergrc;	
   set<GRCNode *> visited;
@@ -141,7 +137,6 @@ class STDPS {
 
 };
 
-#line 171 "GRCPDG.nw"
 class Dependencies : public Visitor {
 
 protected:
@@ -164,80 +159,65 @@ protected:
   //procedure calls & function calls
   set<GRCNode *> all_calls;
 
-  
-#line 438 "GRCPDG.nw"
-void dfs(GRCNode *);
-#line 455 "GRCPDG.nw"
-Status visit(Action &);
-#line 475 "GRCPDG.nw"
-Status visit(Emit &);
-#line 494 "GRCPDG.nw"
-Status visit(Exit &);
-#line 513 "GRCPDG.nw"
-Status visit(Assign &);
-#line 531 "GRCPDG.nw"
-Status visit(DefineSignal &);
-#line 540 "GRCPDG.nw"
-Status visit(Test &t) { 
-  t.predicate->welcome(*this); return Status(); 
-}
-#line 557 "GRCPDG.nw"
-Status visit(StartCounter &);
-#line 584 "GRCPDG.nw"
-Status visit(ProcedureCall &);
-#line 604 "GRCPDG.nw"
-Status visit(FunctionCall &);
-#line 610 "GRCPDG.nw"
-Status visit(LoadSignalExpression &e) {
-  dependencies[e.signal].readers.insert(current);
-  current->dataPredecessors.clear();
-  return Status();
-}
+  void dfs(GRCNode *);
+  Status visit(Action &);
+  Status visit(Emit &);
+  Status visit(Exit &);
+  Status visit(Assign &);
+  Status visit(DefineSignal &);
+  Status visit(Test &t) { 
+    t.predicate->welcome(*this); return Status(); 
+  }
+  Status visit(StartCounter &);
+  Status visit(ProcedureCall &);
+  Status visit(FunctionCall &);
+  Status visit(LoadSignalExpression &e) {
+    dependencies[e.signal].readers.insert(current);
+    current->dataPredecessors.clear();
+    return Status();
+  }
 
-Status visit(LoadSignalValueExpression &e) {
-  dependencies[e.signal].readers.insert(current);
-  current->dataPredecessors.clear();
-  return Status();
-}
+  Status visit(LoadSignalValueExpression &e) {
+    dependencies[e.signal].readers.insert(current);
+    current->dataPredecessors.clear();
+    return Status();
+  }
 
-Status visit(LoadVariableExpression &e) { 
-  v_dependencies[e.variable].readers.insert(current);
-  return Status(); 
-}
+  Status visit(LoadVariableExpression &e) { 
+    v_dependencies[e.variable].readers.insert(current);
+    return Status(); 
+  }
 
-Status visit(BinaryOp &e) {
-  e.source1->welcome(*this);
-  e.source2->welcome(*this);
-  return Status();
-}
+  Status visit(BinaryOp &e) {
+    e.source1->welcome(*this);
+    e.source2->welcome(*this);
+    return Status();
+  }
 
-Status visit(UnaryOp &e) {
-  e.source->welcome(*this);
-  return Status();
-}
+  Status visit(UnaryOp &e) {
+    e.source->welcome(*this);
+    return Status();
+  }
 
-Status visit(CheckCounter &e) {
-  e.predicate->welcome(*this);
-  return Status();
-}
+  Status visit(CheckCounter &e) {
+    e.predicate->welcome(*this);
+    return Status();
+  }
 
-Status visit(Delay &d) {
-  d.predicate->welcome(*this);
-  return Status();
-}
-#line 652 "GRCPDG.nw"
-Status visit(Literal &) { return Status(); }
-#line 660 "GRCPDG.nw"
-Status visit(EnterGRC &) { return Status(); }
-Status visit(ExitGRC &) { return Status(); }
-Status visit(Nop &) { return Status(); }
-Status visit(Switch &) { return Status(); }
-Status visit(STSuspend &) { return Status(); }
-Status visit(Fork &) { return Status(); }
-Status visit(Terminate &) { return Status(); }
-Status visit(Enter &) { return Status(); }
-Status visit(Sync &s) { return Status(); }
-#line 194 "GRCPDG.nw"
+  Status visit(Delay &d) {
+    d.predicate->welcome(*this);
+    return Status();
+  }
+  Status visit(Literal &) { return Status(); }
+  Status visit(EnterGRC &) { return Status(); }
+  Status visit(ExitGRC &) { return Status(); }
+  Status visit(Nop &) { return Status(); }
+  Status visit(Switch &) { return Status(); }
+  Status visit(STSuspend &) { return Status(); }
+  Status visit(Fork &) { return Status(); }
+  Status visit(Terminate &) { return Status(); }
+  Status visit(Enter &) { return Status(); }
+  Status visit(Sync &s) { return Status(); }
   void mark_par(GRCNode* n);
   bool have_comm_pp_gen(GRCNode* n, GRCNode* m);
   bool have_comm_pp(GRCNode* n, GRCNode* m);
@@ -252,7 +232,6 @@ public:
   void compute(GRCNode *);
 };
 
-#line 210 "GRCPDG.nw"
 void Dependencies::compute(GRCNode *root)
 {
   assert(root);
@@ -328,7 +307,6 @@ void Dependencies::compute(GRCNode *root)
   }
 
 }
-#line 289 "GRCPDG.nw"
 void Dependencies::mark_par(GRCNode* n)
   {
     int sz, i;
@@ -348,7 +326,6 @@ void Dependencies::mark_par(GRCNode* n)
     par_label[n] = true;
     visited.insert(n);
   }
-#line 311 "GRCPDG.nw"
   //test if two nodes n & m have parallel first-comm-parent
   //where m's parents have been labeled
   bool Dependencies::have_comm_pp_gen(GRCNode* n, GRCNode* m)
@@ -358,7 +335,6 @@ void Dependencies::mark_par(GRCNode* n)
 
     return have_comm_pp(n,m);
   }
-#line 323 "GRCPDG.nw"
   bool Dependencies::have_comm_pp(GRCNode* n, GRCNode* m)
   {
 
@@ -384,7 +360,6 @@ void Dependencies::mark_par(GRCNode* n)
     return false;
 
   }
-#line 351 "GRCPDG.nw"
   //test if two nodes n & m have data dependency already
   bool Dependencies::have_dps(GRCNode* n, GRCNode* m)
   {
@@ -400,7 +375,6 @@ void Dependencies::mark_par(GRCNode* n)
 
     return found;
   }
-#line 369 "GRCPDG.nw"
   //find the most recent ancestor of n which R/W var
   void Dependencies::find_mra(GRCNode *n, const SignalNodes &sn, bool rw)
   {
@@ -425,7 +399,6 @@ void Dependencies::mark_par(GRCNode* n)
       find_mra(*i, sn, rw);
     }
   }
-#line 396 "GRCPDG.nw"
   //find most recent ancestor of n which includes a function/procedure call
   void Dependencies::find_mra_calls(GRCNode *n)
   {
@@ -444,7 +417,6 @@ void Dependencies::mark_par(GRCNode* n)
       }
     }
   }
-#line 423 "GRCPDG.nw"
 void Dependencies::dfs(GRCNode *n)
 {
   if (!n || visited.find(n) != visited.end() ) return;
@@ -457,13 +429,11 @@ void Dependencies::dfs(GRCNode *n)
   for (vector<GRCNode*>::const_iterator i = n->successors.begin() ;
        i < n->successors.end() ; i++ ) dfs(*i);  
 }
-#line 447 "GRCPDG.nw"
 Status Dependencies::visit(Action &act)
 {
     act.body->welcome(*this);
     return Status();
 }
-#line 463 "GRCPDG.nw"
 Status Dependencies::visit(Emit &emt)
 {
     dependencies[emt.signal].writers.insert(current);
@@ -473,7 +443,6 @@ Status Dependencies::visit(Emit &emt)
 
     return Status();
 }
-#line 483 "GRCPDG.nw"
 Status Dependencies::visit(Exit &ext)
 {
     dependencies[ext.trap].writers.insert(current);
@@ -482,7 +451,6 @@ Status Dependencies::visit(Exit &ext)
       ext.value->welcome(*this);
     return Status();
 }
-#line 502 "GRCPDG.nw"
 Status Dependencies::visit(Assign &asn)
 {
     v_dependencies[asn.variable].writers.insert(current);
@@ -491,7 +459,6 @@ Status Dependencies::visit(Assign &asn)
       asn.value->welcome(*this);
     return Status();
 }
-#line 521 "GRCPDG.nw"
 Status Dependencies::visit(DefineSignal &ds)
 {
   assert(ds.signal);
@@ -499,12 +466,10 @@ Status Dependencies::visit(DefineSignal &ds)
   current->dataSuccessors.clear();
   return Status();
 }
-#line 550 "GRCPDG.nw"
 Status Dependencies::visit(StartCounter &sct)
 {
     return Status();
 }
-#line 566 "GRCPDG.nw"
 Status Dependencies::visit(ProcedureCall &prc)
 {
   all_calls.insert(current);
@@ -520,7 +485,6 @@ Status Dependencies::visit(ProcedureCall &prc)
   }
   return Status();
 }
-#line 592 "GRCPDG.nw"
 Status Dependencies::visit(FunctionCall &func)
 {
   all_calls.insert(current);
@@ -531,7 +495,6 @@ Status Dependencies::visit(FunctionCall &func)
   return Status();
 }
 
-#line 675 "GRCPDG.nw"
 class GRC2PDG {
 
   CFGmap &dotrefmap;
@@ -564,505 +527,487 @@ class GRC2PDG {
   int debug, debug2;
   
 public:
-  
-#line 719 "GRCPDG.nw"
-GRC2PDG(GRCNode *top, CFGmap &dotrefmap) : dotrefmap(dotrefmap)
-{
-  debug=0;debug2=0;
+  GRC2PDG(GRCNode *top, CFGmap &dotrefmap) : dotrefmap(dotrefmap)
+  {
+    debug=0;debug2=0;
 
-  assert(top);
-  enternode = dynamic_cast<EnterGRC *>(top);
-  assert(enternode);
-  exitnode = dynamic_cast<ExitGRC *>(enternode->successors[0]);
-  assert(exitnode);
+    assert(top);
+    enternode = dynamic_cast<EnterGRC *>(top);
+    assert(enternode);
+    exitnode = dynamic_cast<ExitGRC *>(enternode->successors[0]);
+    assert(exitnode);
 
-  N = 0; // Used to number the nodes during reverse DFS
-  reverse_dfs(NULL, exitnode);
- 
-  build_dominance_tree();
-
-  df.resize(N);
-  compute_dominance_frontier(nodenum[exitnode]);
-  //print_df();
-
-  cd.resize(N);
-  compute_control_dependence();
-  //print_CD();
-
-  //cerr<<"start building pdg\n";
-  build_pdg();
-  //print_PDG();
-
-  visited.clear();
-  removeJunkNull(enternode);
-  visited.clear();
-  removeJunkFork(enternode);
-  //cerr<<"finished\n";
-}
-#line 759 "GRCPDG.nw"
-void reverse_dfs(GRCNode *p, GRCNode *n)
-{
-  if (!n || contains(nodenum,n) ) return;
-
-  nodenum[n] = N;
-  vert.push_back(n);
-  parent.push_back(p ? nodenum[p] : -1);
-  N++;
-
-  if ( n != enternode )
-    for (vector<GRCNode*>::iterator i = n->predecessors.begin() ;
-	 i != n->predecessors.end() ; i++)
-      reverse_dfs(n, *i);
-}
-#line 780 "GRCPDG.nw"
-void build_dominance_tree()
-{
-  ancestor.resize(N,-1);
-  semi.resize(N,-1);
-  idom.resize(N,-1);
-  vector<int> samedom;
-  samedom.resize(N,-1);
-
-  vector<set<int> > bucket;
-  bucket.resize(N);
-
-  ichild.resize(N);
-
-  for ( int n = N-1 ; n > 0 ; n-- ) {
-
-    assert(dotrefmap.count(vert[n])>0); // FIXME: ??
-
-    int p = parent[n];
-    int s = p;
-
-    for( vector<GRCNode*>::iterator iv = vert[n]->successors.begin() ;
-	 iv != vert[n]->successors.end() ; iv++ ) {
-      if (*iv) {
-	int v = nodenum[*iv];
-	int s1 = (v <= n) ? v : semi[ancestor_lowest_semi(v)];
-	if ( s1 < s ) s = s1;
-      }
-    }
-
-    semi[n] = s;
-    if ( !contains(bucket[s], n) ) bucket[s].insert(n);
-    ancestor[n] = p;
-      
-    for( set<int>::iterator iv = bucket[p].begin() ;
-	 iv != bucket[p].end() ; iv++ ) {
-      int v = *iv;
-      int y = ancestor_lowest_semi(v);
-      if (semi[y] == semi[v]) idom[v] = p; 
-      else samedom[v] = y;
-    }
-
-    bucket[p].clear();
-  }
-
-  for (int n = 1 ; n < N ; n++ )
-    if ( samedom[n] != -1 )
-      idom[n] = idom[samedom[n]];
-
-  for (int n = 1 ; n < N ; n++)
-    if ( idom[n] != -1 ) 
-      ichild[idom[n]].insert(n);
-}
-#line 837 "GRCPDG.nw"
-int ancestor_lowest_semi(int v)
-{
-  int u = v;
-  while ( ancestor[v] != -1 ) {
-    if ( semi[v] < semi[u] ) u = v;
-    v = ancestor[v];
-  }
-
-  return u;
-} 
-#line 855 "GRCPDG.nw"
-void compute_dominance_frontier(int n)
-{    
-  for(set<int>::iterator iz = ichild[n].begin(); iz != ichild[n].end() ; iz++)
-    compute_dominance_frontier(*iz);
-
-  int enternodeidx = nodenum[enternode];
+    N = 0; // Used to number the nodes during reverse DFS
+    reverse_dfs(NULL, exitnode);
    
-  if ( n != enternodeidx ) {
-    for (vector<GRCNode*>::iterator i = vert[n]->predecessors.begin() ;
-	 i != vert[n]->predecessors.end(); i++ ) {
-      assert(contains(nodenum, *i));
-      int y = nodenum[*i];
-      if ( idom[y] != n && !contains(df[n], y) ) {
-	assert( contains(dotrefmap, *i) );
-	df[n].insert(y);
+    build_dominance_tree();
+
+    df.resize(N);
+    compute_dominance_frontier(nodenum[exitnode]);
+    //print_df();
+
+    cd.resize(N);
+    compute_control_dependence();
+    //print_CD();
+
+    //cerr<<"start building pdg\n";
+    build_pdg();
+    //print_PDG();
+
+    visited.clear();
+    removeJunkNull(enternode);
+    visited.clear();
+    removeJunkFork(enternode);
+    //cerr<<"finished\n";
+  }
+  void reverse_dfs(GRCNode *p, GRCNode *n)
+  {
+    if (!n || contains(nodenum,n) ) return;
+
+    nodenum[n] = N;
+    vert.push_back(n);
+    parent.push_back(p ? nodenum[p] : -1);
+    N++;
+
+    if ( n != enternode )
+      for (vector<GRCNode*>::iterator i = n->predecessors.begin() ;
+  	 i != n->predecessors.end() ; i++)
+        reverse_dfs(n, *i);
+  }
+  void build_dominance_tree()
+  {
+    ancestor.resize(N,-1);
+    semi.resize(N,-1);
+    idom.resize(N,-1);
+    vector<int> samedom;
+    samedom.resize(N,-1);
+
+    vector<set<int> > bucket;
+    bucket.resize(N);
+
+    ichild.resize(N);
+
+    for ( int n = N-1 ; n > 0 ; n-- ) {
+
+      assert(dotrefmap.count(vert[n])>0); // FIXME: ??
+
+      int p = parent[n];
+      int s = p;
+
+      for( vector<GRCNode*>::iterator iv = vert[n]->successors.begin() ;
+  	 iv != vert[n]->successors.end() ; iv++ ) {
+        if (*iv) {
+  	int v = nodenum[*iv];
+  	int s1 = (v <= n) ? v : semi[ancestor_lowest_semi(v)];
+  	if ( s1 < s ) s = s1;
+        }
+      }
+
+      semi[n] = s;
+      if ( !contains(bucket[s], n) ) bucket[s].insert(n);
+      ancestor[n] = p;
+        
+      for( set<int>::iterator iv = bucket[p].begin() ;
+  	 iv != bucket[p].end() ; iv++ ) {
+        int v = *iv;
+        int y = ancestor_lowest_semi(v);
+        if (semi[y] == semi[v]) idom[v] = p; 
+        else samedom[v] = y;
+      }
+
+      bucket[p].clear();
+    }
+
+    for (int n = 1 ; n < N ; n++ )
+      if ( samedom[n] != -1 )
+        idom[n] = idom[samedom[n]];
+
+    for (int n = 1 ; n < N ; n++)
+      if ( idom[n] != -1 ) 
+        ichild[idom[n]].insert(n);
+  }
+  int ancestor_lowest_semi(int v)
+  {
+    int u = v;
+    while ( ancestor[v] != -1 ) {
+      if ( semi[v] < semi[u] ) u = v;
+      v = ancestor[v];
+    }
+
+    return u;
+  } 
+  void compute_dominance_frontier(int n)
+  {    
+    for(set<int>::iterator iz = ichild[n].begin(); iz != ichild[n].end() ; iz++)
+      compute_dominance_frontier(*iz);
+
+    int enternodeidx = nodenum[enternode];
+     
+    if ( n != enternodeidx ) {
+      for (vector<GRCNode*>::iterator i = vert[n]->predecessors.begin() ;
+  	 i != vert[n]->predecessors.end(); i++ ) {
+        assert(contains(nodenum, *i));
+        int y = nodenum[*i];
+        if ( idom[y] != n && !contains(df[n], y) ) {
+  	assert( contains(dotrefmap, *i) );
+  	df[n].insert(y);
+        }
+      }
+    }
+
+    for( set<int>::iterator iz = ichild[n].begin() ;
+         iz != ichild[n].end() ; iz++) {
+      int z = *iz;
+      for( set<int>::iterator iy = df[z].begin() ; iy != df[z].end() ; iy++ ) {
+        int y = *iy;
+        if(idom[y] != n && !contains(df[n], y) ) df[n].insert(y);
       }
     }
   }
-
-  for( set<int>::iterator iz = ichild[n].begin() ;
-       iz != ichild[n].end() ; iz++) {
-    int z = *iz;
-    for( set<int>::iterator iy = df[z].begin() ; iy != df[z].end() ; iy++ ) {
-      int y = *iy;
-      if(idom[y] != n && !contains(df[n], y) ) df[n].insert(y);
-    }
-  }
-}
-#line 891 "GRCPDG.nw"
-void compute_control_dependence()
-{
-  for( int y = 0 ; y < N ; y++ )
-    for(set<int>::iterator ix=df[y].begin() ; ix!=df[y].end() ; ix++) {
-      int x = *ix;
-      if ( !contains(cd[x], y) ) cd[x].insert(y);
-    }
-
-  //a trick - force EnterGRC's child[1] to be CD of EnterGRC
-  cd[nodenum[enternode]].insert(nodenum[enternode->successors[1]]);
-} 
-#line 907 "GRCPDG.nw"
-void build_pdg()
-{
-  copy_conn();
-  remove_conn();
-
-  int counter = N;
-
-  //for each node i
-  for (int i = 0; i < N; i++ ) {
-    if(debug) cerr<<"for node "<<dotrefmap[vert[i]]<<"\n";
-    GRCNode *n = vert[i];
-
-    assert(dotrefmap.count(vert[i])>0);
-
-    if ( n == exitnode ) {
-
-      // n is ExitGRC; ignore it
-
-    } else if ((dynamic_cast<Fork *>(n))
-	       ||
-	       (n == enternode && (cd[i].size() < 2)) ) {
-
-      // A parallel node or EnterGRC with a single child:
-      // Make each CD member a child, disregard its original child number
-      // If n is EnterGRC with 1 child, take it as a parallel node
-      // **** something may happen, if one can exit in two branches
-
-      for( set<int>::iterator iy = cd[i].begin() ; iy != cd[i].end() ; iy++) {
-	GRCNode *y = vert[*iy];
-	if ( y != exitnode && ((*iy) != i) ) {
-	  n->successors.push_back(y);
-	  y->predecessors.push_back(n);
-	}
+  void compute_control_dependence()
+  {
+    for( int y = 0 ; y < N ; y++ )
+      for(set<int>::iterator ix=df[y].begin() ; ix!=df[y].end() ; ix++) {
+        int x = *ix;
+        if ( !contains(cd[x], y) ) cd[x].insert(y);
       }
 
-    } else if ( n == enternode ) {     
+    //a trick - force EnterGRC's child[1] to be CD of EnterGRC
+    cd[nodenum[enternode]].insert(nodenum[enternode->successors[1]]);
+  } 
+  void build_pdg()
+  {
+    copy_conn();
+    remove_conn();
 
-      // EnterGRC with more than 1 child
-  
-      Fork *reg = new Fork();
-      for (set<int>::iterator iy = cd[i].begin() ; iy != cd[i].end() ; iy++) {
-	GRCNode *y = vert[*iy];
-	if (y != exitnode && ((*iy) != i)) {
-	  reg->successors.push_back(y);
-	  y->predecessors.push_back(reg);
-	}
-      }
+    int counter = N;
 
-      //new region node
-      nodenum[reg] = counter++;
-      vert.push_back(reg);
-      n->successors.push_back(reg);
-      reg->predecessors.push_back(n);
+    //for each node i
+    for (int i = 0; i < N; i++ ) {
+      if(debug) cerr<<"for node "<<dotrefmap[vert[i]]<<"\n";
+      GRCNode *n = vert[i];
 
-    } else {
+      assert(dotrefmap.count(vert[i])>0);
 
-      // else, for each successor ic of i, make a region node reg
+      if ( n == exitnode ) {
 
-      if(debug) cerr<<" build regions for ic succ:\n";
-      for(vector<int>::iterator ic = succmap[i].begin();	  
-	  ic != succmap[i].end(); ic++) {
+        // n is ExitGRC; ignore it
 
-	// NULL node
-	if (*ic == -1){
-	  n->successors.push_back(NULL);
-	  if(debug) cerr<<"  null succ\n";
-	  continue;
-	}
-	if (dynamic_cast<ExitGRC *>(vert[*ic])){
-	  if(debug) cerr<<"  exit grc succ\n";
-	  continue;
-	}
+      } else if ((dynamic_cast<Fork *>(n))
+  	       ||
+  	       (n == enternode && (cd[i].size() < 2)) ) {
 
-	Fork *reg = new Fork();
+        // A parallel node or EnterGRC with a single child:
+        // Make each CD member a child, disregard its original child number
+        // If n is EnterGRC with 1 child, take it as a parallel node
+        // **** something may happen, if one can exit in two branches
 
-	if(debug) cerr<<"  real succ IC "<<dotrefmap[vert[*ic]]<<"\n";
+        for( set<int>::iterator iy = cd[i].begin() ; iy != cd[i].end() ; iy++) {
+  	GRCNode *y = vert[*iy];
+  	if ( y != exitnode && ((*iy) != i) ) {
+  	  n->successors.push_back(y);
+  	  y->predecessors.push_back(n);
+  	}
+        }
 
-	//for each node iy in CD set of node i, 
-	// check if iy is reachable from brunch ic
-	for(set<int>::iterator iy=cd[i].begin(); iy!=cd[i].end(); iy++){
-	  if ((dynamic_cast<ExitGRC *>(vert[*iy])) || ((*iy) == i))
-	    continue;
+      } else if ( n == enternode ) {     
 
-	  if(debug) cerr<<" IY "<<dotrefmap[vert[*iy]]<<"\n";
-	  
-	  reachability.clear();
-	  if(debug) cerr<<"testing reachablility...";
-	  if (reachable((*ic), (*iy))) {	
-	    // if yes, add it as a child of the brunch region node reg
-	    reg->successors.push_back(vert[*iy]);
-	    vert[*iy]->predecessors.push_back(reg);
-	  }
-	  if(debug) cerr<<" finshed\n";
-	}
+        // EnterGRC with more than 1 child
+    
+        Fork *reg = new Fork();
+        for (set<int>::iterator iy = cd[i].begin() ; iy != cd[i].end() ; iy++) {
+  	GRCNode *y = vert[*iy];
+  	if (y != exitnode && ((*iy) != i)) {
+  	  reg->successors.push_back(y);
+  	  y->predecessors.push_back(reg);
+  	}
+        }
 
-	//place the region node reg as n's child
-	// if reg only has one child, add this child directly
-	switch (reg->successors.size()){
-	case 0: 
-	  //if n is sync|switch|test,instead of reg, place a null node there
-	  if ((dynamic_cast<Switch *>(n)) || (dynamic_cast<Sync *>(n))
-	      || (dynamic_cast<Test *>(n)))
-	    n->successors.push_back(NULL);
-	  break;
-	case 1: 
-	  n->successors.push_back(reg->successors[0]);
-	  reg->successors[0]->predecessors.pop_back();
-	  reg->successors[0]->predecessors.push_back(n);
-	  reg->successors.clear();
-	  break;
-	default:
-	  if(debug) cerr<<"add new reg node: "<<counter<<"\n";
-	  nodenum[reg] = counter++;
-	  vert.push_back(reg); 
-	  n->successors.push_back(reg);
-	  reg->predecessors.push_back(n);
-	  break;
-	}	
-      }
-      if(debug) cerr<<"N"<<dotrefmap[vert[i]]<<" is finished\n";
-    }
-  }
-}
-#line 1035 "GRCPDG.nw"
-void copy_conn()
-{
-  nullnum = 0;
+        //new region node
+        nodenum[reg] = counter++;
+        vert.push_back(reg);
+        n->successors.push_back(reg);
+        reg->predecessors.push_back(n);
 
-  for (int i = 0; i < N; i++){
-    for (vector<GRCNode *>::iterator ic = vert[i]->successors.begin();
-	 ic != vert[i]->successors.end(); ic++){
-      if (*ic)
-	succmap[i].push_back(nodenum[*ic]);
-      else{
-	succmap[i].push_back(-1);
-	nullnum++;
-      }
-    }
-    for (vector<GRCNode *>::iterator ip = vert[i]->predecessors.begin();
-	 ip != vert[i]->predecessors.end(); ip++){
-      predmap[i].push_back(nodenum[*ip]);
-    }
-  }
-}
-#line 1060 "GRCPDG.nw"
-void remove_conn()
-{
-  for (int i = 0; i < N; i++){
-    vert[i]->successors.clear();
-    if (vert[i] != enternode)
-      vert[i]->predecessors.clear();
-  }
-}
-#line 1073 "GRCPDG.nw"
-bool reachable(int from, int to)
-{
-  if(debug2) cerr<<" dfs "<<dotrefmap[vert[from]]<<"->"<<dotrefmap[vert[to]]<<"\n";
+      } else {
 
-  if (reachability.count(from) > 0)
-    return reachability[from];
-      
-  if (from == 0){
-    if(debug2) cerr<<dotrefmap[vert[from]]<<"->"<<dotrefmap[vert[to]]<<"  NO2\n";
-    reachability[from] = false;
-    return false;
-  }
+        // else, for each successor ic of i, make a region node reg
 
-  if (from == -1){
-    if(debug2) cerr<<dotrefmap[vert[from]]<<"->"<<dotrefmap[vert[to]]<<"  YES2\n";
-    reachability[from] = true;
-    return true;
-  }
+        if(debug) cerr<<" build regions for ic succ:\n";
+        for(vector<int>::iterator ic = succmap[i].begin();	  
+  	  ic != succmap[i].end(); ic++) {
 
-  if (to == from){
-    if(debug2) cerr<<dotrefmap[vert[from]]<<"->"<<dotrefmap[vert[to]]<<"  YES1\n";
-    reachability[from] = true;
-    return true;
-  }
+  	// NULL node
+  	if (*ic == -1){
+  	  n->successors.push_back(NULL);
+  	  if(debug) cerr<<"  null succ\n";
+  	  continue;
+  	}
+  	if (dynamic_cast<ExitGRC *>(vert[*ic])){
+  	  if(debug) cerr<<"  exit grc succ\n";
+  	  continue;
+  	}
 
-  assert(vert[from]);
+  	Fork *reg = new Fork();
 
-  //for fork node, reachable from any one of the children is reable
-  if (dynamic_cast<Fork *>(vert[from])){
-    for (vector<int>::iterator ic = succmap[from].begin();
-	 ic != succmap[from].end(); ic++){
-      if (reachable((*ic), to)){
-	if(debug2) cerr<<dotrefmap[vert[from]]<<"->"<<dotrefmap[vert[to]]<<"  YES3\n";
-	reachability[from] = true;
-	return true;
+  	if(debug) cerr<<"  real succ IC "<<dotrefmap[vert[*ic]]<<"\n";
+
+  	//for each node iy in CD set of node i, 
+  	// check if iy is reachable from brunch ic
+  	for(set<int>::iterator iy=cd[i].begin(); iy!=cd[i].end(); iy++){
+  	  if ((dynamic_cast<ExitGRC *>(vert[*iy])) || ((*iy) == i))
+  	    continue;
+
+  	  if(debug) cerr<<" IY "<<dotrefmap[vert[*iy]]<<"\n";
+  	  
+  	  reachability.clear();
+  	  if(debug) cerr<<"testing reachablility...";
+  	  if (reachable((*ic), (*iy))) {	
+  	    // if yes, add it as a child of the brunch region node reg
+  	    reg->successors.push_back(vert[*iy]);
+  	    vert[*iy]->predecessors.push_back(reg);
+  	  }
+  	  if(debug) cerr<<" finshed\n";
+  	}
+
+  	//place the region node reg as n's child
+  	// if reg only has one child, add this child directly
+  	switch (reg->successors.size()){
+  	case 0: 
+  	  //if n is sync|switch|test,instead of reg, place a null node there
+  	  if ((dynamic_cast<Switch *>(n)) || (dynamic_cast<Sync *>(n))
+  	      || (dynamic_cast<Test *>(n)))
+  	    n->successors.push_back(NULL);
+  	  break;
+  	case 1: 
+  	  n->successors.push_back(reg->successors[0]);
+  	  reg->successors[0]->predecessors.pop_back();
+  	  reg->successors[0]->predecessors.push_back(n);
+  	  reg->successors.clear();
+  	  break;
+  	default:
+  	  if(debug) cerr<<"add new reg node: "<<counter<<"\n";
+  	  nodenum[reg] = counter++;
+  	  vert.push_back(reg); 
+  	  n->successors.push_back(reg);
+  	  reg->predecessors.push_back(n);
+  	  break;
+  	}	
+        }
+        if(debug) cerr<<"N"<<dotrefmap[vert[i]]<<" is finished\n";
       }
     }
-    if(debug2) cerr<<dotrefmap[vert[from]]<<"->"<<dotrefmap[vert[to]]<<"  NO3\n";
-    reachability[from] = false;
-    return false;
   }
+  void copy_conn()
+  {
+    nullnum = 0;
 
-  //for else node, reachable means can be reached from all of the children
-  for (vector<int>::iterator ic = succmap[from].begin();
-       ic != succmap[from].end(); ic++){
-    if (!reachable((*ic), to)){
-      if(debug2) cerr<<dotrefmap[vert[from]]<<"->"<<dotrefmap[vert[to]]<<"  NO4\n";
+    for (int i = 0; i < N; i++){
+      for (vector<GRCNode *>::iterator ic = vert[i]->successors.begin();
+  	 ic != vert[i]->successors.end(); ic++){
+        if (*ic)
+  	succmap[i].push_back(nodenum[*ic]);
+        else{
+  	succmap[i].push_back(-1);
+  	nullnum++;
+        }
+      }
+      for (vector<GRCNode *>::iterator ip = vert[i]->predecessors.begin();
+  	 ip != vert[i]->predecessors.end(); ip++){
+        predmap[i].push_back(nodenum[*ip]);
+      }
+    }
+  }
+  void remove_conn()
+  {
+    for (int i = 0; i < N; i++){
+      vert[i]->successors.clear();
+      if (vert[i] != enternode)
+        vert[i]->predecessors.clear();
+    }
+  }
+  bool reachable(int from, int to)
+  {
+    if(debug2) cerr<<" dfs "<<dotrefmap[vert[from]]<<"->"<<dotrefmap[vert[to]]<<"\n";
+
+    if (reachability.count(from) > 0)
+      return reachability[from];
+        
+    if (from == 0){
+      if(debug2) cerr<<dotrefmap[vert[from]]<<"->"<<dotrefmap[vert[to]]<<"  NO2\n";
       reachability[from] = false;
       return false;
     }
-  }
-  if(debug2) cerr<<dotrefmap[vert[from]]<<"->"<<dotrefmap[vert[to]]<<"  YES4\n";
-  reachability[from] = true;
-  return true;
-}
-#line 1133 "GRCPDG.nw"
-void removeJunkNull(GRCNode *n)
-{
-  vector<GRCNode *>::iterator i;
-  vector<GRCNode *> newch;
-  bool isfork = false;
 
-  if (!n)
-    return;
+    if (from == -1){
+      if(debug2) cerr<<dotrefmap[vert[from]]<<"->"<<dotrefmap[vert[to]]<<"  YES2\n";
+      reachability[from] = true;
+      return true;
+    }
 
-  if (visited.count(nodenum[n]) > 0)
-    return;  
-  visited.insert(nodenum[n]);
+    if (to == from){
+      if(debug2) cerr<<dotrefmap[vert[from]]<<"->"<<dotrefmap[vert[to]]<<"  YES1\n";
+      reachability[from] = true;
+      return true;
+    }
 
-  for (i = n->successors.begin(); i != n->successors.end(); i++)
-    removeJunkNull(*i);         
+    assert(vert[from]);
 
-  if (dynamic_cast<Fork *>(n))
-    isfork = true;
+    //for fork node, reachable from any one of the children is reable
+    if (dynamic_cast<Fork *>(vert[from])){
+      for (vector<int>::iterator ic = succmap[from].begin();
+  	 ic != succmap[from].end(); ic++){
+        if (reachable((*ic), to)){
+  	if(debug2) cerr<<dotrefmap[vert[from]]<<"->"<<dotrefmap[vert[to]]<<"  YES3\n";
+  	reachability[from] = true;
+  	return true;
+        }
+      }
+      if(debug2) cerr<<dotrefmap[vert[from]]<<"->"<<dotrefmap[vert[to]]<<"  NO3\n";
+      reachability[from] = false;
+      return false;
+    }
 
-  if (n->successors.size() == 0)
-    return;
-
-  for (i = n->successors.begin(); i != n->successors.end(); i++){
-    if (!*i){
-      if (isfork){
-        rm_invect((*i)->predecessors, n);
-        continue;
+    //for else node, reachable means can be reached from all of the children
+    for (vector<int>::iterator ic = succmap[from].begin();
+         ic != succmap[from].end(); ic++){
+      if (!reachable((*ic), to)){
+        if(debug2) cerr<<dotrefmap[vert[from]]<<"->"<<dotrefmap[vert[to]]<<"  NO4\n";
+        reachability[from] = false;
+        return false;
       }
     }
-    else if ((dynamic_cast<Fork *>(*i)) && ((*i)->successors.size() == 0)){
-      rm_invect((*i)->predecessors, n);
-      rm_datadps(*i);
-      continue;
-    }
-    else if (all_child_null(*i)){
-      if (isfork){
+    if(debug2) cerr<<dotrefmap[vert[from]]<<"->"<<dotrefmap[vert[to]]<<"  YES4\n";
+    reachability[from] = true;
+    return true;
+  }
+  void removeJunkNull(GRCNode *n)
+  {
+    vector<GRCNode *>::iterator i;
+    vector<GRCNode *> newch;
+    bool isfork = false;
+
+    if (!n)
+      return;
+
+    if (visited.count(nodenum[n]) > 0)
+      return;  
+    visited.insert(nodenum[n]);
+
+    for (i = n->successors.begin(); i != n->successors.end(); i++)
+      removeJunkNull(*i);         
+
+    if (dynamic_cast<Fork *>(n))
+      isfork = true;
+
+    if (n->successors.size() == 0)
+      return;
+
+    for (i = n->successors.begin(); i != n->successors.end(); i++){
+      if (!*i){
+        if (isfork){
+          rm_invect((*i)->predecessors, n);
+          continue;
+        }
+      }
+      else if ((dynamic_cast<Fork *>(*i)) && ((*i)->successors.size() == 0)){
         rm_invect((*i)->predecessors, n);
         rm_datadps(*i);
         continue;
       }
-      else
-	*i = NULL;
-    }
-    newch.push_back(*i);
-  }
-
-  n->successors = newch;
-                
-}
-#line 1187 "GRCPDG.nw"
-void removeJunkFork(GRCNode *n)
-{
-  vector<GRCNode *>::iterator i,j;
-  vector<GRCNode *> newch;
-
-  if (!n)
-    return;
-
-  if (visited.count(nodenum[n]) > 0)
-    return;  
-  visited.insert(nodenum[n]);
-
-  for (i = n->successors.begin(); i != n->successors.end(); i++)
-    removeJunkFork(*i);  
-
-  if (dynamic_cast<Fork *>(n)){
-    assert(n->successors.size()>0);
-    for (i = n->successors.begin(); i != n->successors.end(); i++)
-      if ((dynamic_cast<Fork *>(*i)) && ((*i)->predecessors.size() == 1)){
-        for (j = (*i)->successors.begin(); j != (*i)->successors.end(); j++){  
-	  newch.push_back(*j);
-	  rm_invect((*j)->predecessors, *i);
-          (*j)->predecessors.push_back(n);
+      else if (all_child_null(*i)){
+        if (isfork){
+          rm_invect((*i)->predecessors, n);
+          rm_datadps(*i);
+          continue;
         }
-	(*i)->predecessors.clear();
-	(*i)->successors.clear();
+        else
+  	*i = NULL;
       }
-      else 
-	newch.push_back(*i);
-    n->successors = newch;
-  }
-}
-#line 1224 "GRCPDG.nw"
-void rm_invect(vector<GRCNode *> &vec, GRCNode *n)
-{
-  assert(n);
-  vector<GRCNode *>::iterator i = vec.begin();
-    while (i != vec.end()){
-      if ((*i) == n)
-	i = vec.erase(i);
-      else
-	i++;
+      newch.push_back(*i);
     }
-}
-#line 1240 "GRCPDG.nw"
-void rm_datadps(GRCNode *n)
-{
-  vector<GRCNode *>::iterator i;
 
-  for (i = n->dataPredecessors.begin(); i != n->dataPredecessors.end(); i++){
-    rm_invect((*i)->dataSuccessors, n);
+    n->successors = newch;
+                  
   }
+  void removeJunkFork(GRCNode *n)
+  {
+    vector<GRCNode *>::iterator i,j;
+    vector<GRCNode *> newch;
 
-  for (i = n->dataSuccessors.begin(); i != n->dataSuccessors.end(); i++){
-    rm_invect((*i)->dataPredecessors, n);
+    if (!n)
+      return;
+
+    if (visited.count(nodenum[n]) > 0)
+      return;  
+    visited.insert(nodenum[n]);
+
+    for (i = n->successors.begin(); i != n->successors.end(); i++)
+      removeJunkFork(*i);  
+
+    if (dynamic_cast<Fork *>(n)){
+      assert(n->successors.size()>0);
+      for (i = n->successors.begin(); i != n->successors.end(); i++)
+        if ((dynamic_cast<Fork *>(*i)) && ((*i)->predecessors.size() == 1)){
+          for (j = (*i)->successors.begin(); j != (*i)->successors.end(); j++){  
+  	  newch.push_back(*j);
+  	  rm_invect((*j)->predecessors, *i);
+            (*j)->predecessors.push_back(n);
+          }
+  	(*i)->predecessors.clear();
+  	(*i)->successors.clear();
+        }
+        else 
+  	newch.push_back(*i);
+      n->successors = newch;
+    }
   }
+  void rm_invect(vector<GRCNode *> &vec, GRCNode *n)
+  {
+    assert(n);
+    vector<GRCNode *>::iterator i = vec.begin();
+      while (i != vec.end()){
+        if ((*i) == n)
+  	i = vec.erase(i);
+        else
+  	i++;
+      }
+  }
+  void rm_datadps(GRCNode *n)
+  {
+    vector<GRCNode *>::iterator i;
 
-  n->dataPredecessors.clear();
-  n->dataSuccessors.clear();
-}
-#line 1260 "GRCPDG.nw"
-bool all_child_null(GRCNode *n)
-{
-  int sz;
+    for (i = n->dataPredecessors.begin(); i != n->dataPredecessors.end(); i++){
+      rm_invect((*i)->dataSuccessors, n);
+    }
 
-  assert(n);
-  sz = n->successors.size();
+    for (i = n->dataSuccessors.begin(); i != n->dataSuccessors.end(); i++){
+      rm_invect((*i)->dataPredecessors, n);
+    }
 
-  if (sz == 0)
-    return false;
+    n->dataPredecessors.clear();
+    n->dataSuccessors.clear();
+  }
+  bool all_child_null(GRCNode *n)
+  {
+    int sz;
 
-  for(vector<GRCNode *>::iterator i = n->successors.begin();
-      i != n->successors.end(); i++)
-    if (*i)
+    assert(n);
+    sz = n->successors.size();
+
+    if (sz == 0)
       return false;
-	
-  return true;
-}
-#line 708 "GRCPDG.nw"
+
+    for(vector<GRCNode *>::iterator i = n->successors.begin();
+        i != n->successors.end(); i++)
+      if (*i)
+        return false;
+  	
+    return true;
+  }
 };
 
 
-#line 1351 "GRCPDG.nw"
 int main(int argc, char* argv[])
 {
   IR::XMListream f(std::cin);
