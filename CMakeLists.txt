@@ -23,6 +23,7 @@ endforeach( EXE )
 add_executable( cec-grcopt ${CMAKE_SOURCE_DIR}/src/GRCOpt.cpp )
 target_link_libraries( cec-grcopt cec cecantlr ${EXPAT_LIBRARIES} )
 
+
 # Copy cec to build directory
 execute_process(
     COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/src/cec ${CMAKE_BINARY_DIR}
