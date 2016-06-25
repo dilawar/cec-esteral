@@ -13,7 +13,7 @@ endif()
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
 include_directories( ${CMAKE_SOURCE_DIR}/libantlr )
 
-add_library( cec SHARED
+add_library( cec SHARED 
     ${CMAKE_CURRENT_SOURCE_DIR}/AST.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/ASTGRC.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/beeble_statemachine.cpp
@@ -37,3 +37,5 @@ add_library( cec SHARED
     ${CMAKE_CURRENT_SOURCE_DIR}/pdg2beeblebrox_utils.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/prblif.cpp
     )
+
+target_link_libraries( cec cecantlr )

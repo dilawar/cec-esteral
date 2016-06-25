@@ -17,11 +17,12 @@ include_directories( ${CMAKE_SOURCE_DIR}/libantlr )
 foreach( EXE ${CECTARGETS} )
     message( STATUS "Adding executable for cec-${EXE}" ) 
     add_executable( cec-${EXE} ${CMAKE_SOURCE_DIR}/src/cec-${EXE}.cpp )
-    target_link_libraries( cec-${EXE} cec cecantlr ${EXPAT_LIBRARIES} )
+    target_link_libraries( cec-${EXE} cec ${EXPAT_LIBRARIES} )
 endforeach( EXE )
 
 add_executable( cec-grcopt ${CMAKE_SOURCE_DIR}/src/GRCOpt.cpp )
-target_link_libraries( cec-grcopt cec cecantlr ${EXPAT_LIBRARIES} )
+
+target_link_libraries( cec-grcopt cec ${EXPAT_LIBRARIES} )
 
 
 # Copy cec to build directory
