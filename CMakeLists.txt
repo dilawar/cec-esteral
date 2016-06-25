@@ -20,8 +20,23 @@ foreach( EXE ${CECTARGETS} )
     target_link_libraries( cec-${EXE} cec cecantlr ${EXPAT_LIBRARIES} )
 endforeach( EXE )
 
+add_executable( cec-grcopt ${CMAKE_SOURCE_DIR}/src/GRCOpt.cpp )
+target_link_libraries( cec-grcopt cec cecantlr ${EXPAT_LIBRARIES} )
+
 # Copy cec to build directory
 execute_process(
     COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/src/cec ${CMAKE_BINARY_DIR}
     )
+
+### Tests 
+enable_testing( )
+
+file( GLOB TEST_SRCS "${CMAKE_SOURCE_DIR}/tests/*.strl" )
+foreach( TEST ${TEST_SRCS} )
+    add_test( NAME test-${TEST}
+        COMMAND ./cec ${TEST}
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+        )
+endforeach( TEST )
+
 
