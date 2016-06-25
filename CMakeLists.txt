@@ -7,17 +7,19 @@ include_directories( ${EXPAT_DIRECTORIES} )
 add_subdirectory( libantlr )
 add_subdirectory( src )
 
-SET(CECTARGETS astgrc blifutil dismantle eec expandmodules grc3val
-    grcbal grcc2 grcdot grcpdg grcsim pdgccfg scfgc smblif 
-    strlxml v5-cmain xmlstrl
+SET(CECTARGETS cec-astgrc cec-blifutil cec-dismantle 
+    cec-eec cec-expandmodules cec-grc3val
+    cec-grcbal cec-grcc2 cec-grcdot cec-grcpdg 
+    cec-grcsim cec-pdgccfg cec-scfgc cec-smblif 
+    cec-strlxml cec-v5-cmain cec-xmlstrl
     )
 
 include_directories( ${CMAKE_SOURCE_DIR}/libantlr )
 
 foreach( EXE ${CECTARGETS} )
-    message( STATUS "Adding executable for cec-${EXE}" ) 
-    add_executable( cec-${EXE} ${CMAKE_SOURCE_DIR}/src/cec-${EXE}.cpp )
-    target_link_libraries( cec-${EXE} cec ${EXPAT_LIBRARIES} )
+    message( STATUS "Adding executable for ${EXE}" ) 
+    add_executable( ${EXE} ${CMAKE_SOURCE_DIR}/src/${EXE}.cpp )
+    target_link_libraries( ${EXE} cec ${EXPAT_LIBRARIES} )
 endforeach( EXE )
 
 add_executable( cec-grcopt ${CMAKE_SOURCE_DIR}/src/GRCOpt.cpp )
@@ -28,6 +30,13 @@ target_link_libraries( cec-grcopt cec ${EXPAT_LIBRARIES} )
 # Copy cec to build directory
 execute_process(
     COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/src/cec ${CMAKE_BINARY_DIR}
+    )
+
+# Install 
+install( TARGETS ${CECTARGETS} cec-grcopt DESTINATION bin )
+
+install( PROGRAMS ${CMAKE_SOURCE_DIR}/src/cec 
+    DESTINATION bin
     )
 
 ### Tests 

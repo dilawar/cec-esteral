@@ -1,4 +1,5 @@
 find_program(NOWEB_FOUND noweb)
+
 if(NOWEB_FOUND)
     message( STATUS "noweb found" )
     FILE( GLOB NOWEB_SRCS "${CMAKE_CURRENT_SOURCE_DIR}/*.nw" )
@@ -10,6 +11,7 @@ if(NOWEB_FOUND)
             )
     endforeach( NOSRC )
 endif()
+
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
 include_directories( ${CMAKE_SOURCE_DIR}/libantlr )
 
@@ -29,7 +31,6 @@ add_library( cec SHARED
     ${CMAKE_CURRENT_SOURCE_DIR}/ExpandModules.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/GRCBAL.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/GRCC2.cpp
-    #${CMAKE_CURRENT_SOURCE_DIR}/GRCOpt.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/GRCPrinter.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/GRCsim.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/IR.cpp
@@ -39,3 +40,7 @@ add_library( cec SHARED
     )
 
 target_link_libraries( cec cecantlr )
+
+install( TARGETS cec LIBRARY
+    DESTINATION lib 
+    )
