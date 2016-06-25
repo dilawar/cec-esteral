@@ -39,6 +39,10 @@ install( PROGRAMS ${CMAKE_SOURCE_DIR}/src/cec
     DESTINATION bin
     )
 
+install( FILES ${CMAKE_SOURCE_DIR}/src/cec.1 
+    DESTINATION man/man1
+    )
+
 ### Tests 
 enable_testing( )
 
