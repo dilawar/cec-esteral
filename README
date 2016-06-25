@@ -1,3 +1,7 @@
+This clone of cec compiler is work in progress. Following is planned.
+
+- CMake based build system.
+
 This is cec, the Columbia Esterel Compiler.
 
 Esterel is a synchronous language developed by Gerard Berry et al.
