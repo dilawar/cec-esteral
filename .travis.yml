@@ -2,3 +2,25 @@ language: cpp
 compiler:
 - clang
 - gcc
+
+notifications:
+    email:
+        recipients:
+            - dilawar.s.rajput@gmail.com
+        on_success: change
+        on_failure: always
+
+env:
+    - CTEST_MODEL=Nightly
+cache: apt
+
+matrix:
+    allow_failures:
+
+before_script:
+    - sudo apt-get install -qq libexpat1-dev cmake
+
+script:
+    - mkdir -p _BUILD && cd _GSL_BUILD && cmake -DDEBUG=ON ..
+    - make 
+    - ctest --output-on-failure
