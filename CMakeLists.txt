@@ -19,3 +19,9 @@ foreach( EXE ${CECTARGETS} )
     add_executable( cec-${EXE} ${CMAKE_SOURCE_DIR}/src/cec-${EXE}.cpp )
     target_link_libraries( cec-${EXE} cec cecantlr ${EXPAT_LIBRARIES} )
 endforeach( EXE )
+
+# Copy cec to build directory
+execute_process(
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/src/cec ${CMAKE_BINARY_DIR}
+    )
+
