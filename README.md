@@ -10,5 +10,5 @@ I've added `cmake` based build system. To build and install use the following co
 ```
 cmake .
 make 
-sudo make install  # TODO  
+sudo make install 
 ```
