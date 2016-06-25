@@ -23,6 +23,7 @@ before_script:
 script:
     - mkdir -p _BUILD && cd _BUILD && cmake -DCMAKE_BUILD_TYPE=Release  ..
     - make 
+    - sudo make install
 
 after_success:
     - ctest --output-on-failure
