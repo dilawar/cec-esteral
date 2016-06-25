@@ -33,12 +33,27 @@ execute_process(
 ### Tests 
 enable_testing( )
 
-file( GLOB TEST_SRCS "${CMAKE_SOURCE_DIR}/tests/*.strl" )
-foreach( TEST ${TEST_SRCS} )
-    add_test( NAME test-${TEST}
-        COMMAND ./cec ${TEST}
-        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+set(TEST_DIR ${CMAKE_SOURCE_DIR}/tests )
+file( GLOB TEST_SRCS "${TEST_DIR}/test-*.strl" )
+foreach( FILEPATH ${TEST_SRCS} )
+    get_filename_component( TESTNAME ${FILEPATH} NAME )
+    string( REPLACE ".strl" "" NAME_WITHOUT_EXT ${FILEPATH} )
+    set( C_SRCS ${NAME_WITHOUT_EXT}.c ${NAME_WITHOUT_EXT}.main.c )
+
+    add_test( NAME test-${TESTNAME}
+        COMMAND ${CMAKE_BINARY_DIR}/cec ${FILEPATH}
+        WORKING_DIRECTORY ${TEST_DIR}
         )
-endforeach( TEST )
+
+    add_test( NAME test-${TESTNAME}-compile 
+        COMMAND ${CMAKE_C_COMPILER} ${C_SRCS} -o ${NAME_WITHOUT_EXT}
+        WORKING_DIRECTORY ${TEST_DIR}
+        )
+
+    #add_test( NAME test-${TESTNAME}-run 
+    #    COMMAND ${TEST_DIR}/${NAME_WITHOUT_EXT}.out
+    #    WORKING_DIRECTORY ${TEST_DIR}
+    #    )
+endforeach( FILEPATH )
 
 
