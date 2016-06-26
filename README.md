@@ -12,3 +12,7 @@ cmake .
 make 
 sudo make install 
 ```
+
+Packages  
+========
+You can install it using my repository on Open Build Service https://software.opensuse.org/download.html?project=home%3Adilawar&package=cec
