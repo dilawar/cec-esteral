@@ -39,6 +39,7 @@ add_library( cec SHARED
     ${CMAKE_CURRENT_SOURCE_DIR}/prblif.cpp
     )
 
+set_target_properties( cec PROPERTIES VERSION 0.4.1 SOVERSION 0.4.1 )
 target_link_libraries( cec cecantlr )
 
 install( TARGETS cec LIBRARY

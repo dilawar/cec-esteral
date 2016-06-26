@@ -1,5 +1,7 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
-PROJECT(cec)
+cmake_minimum_required(VERSION 2.6)
+project(cec)
+
+set(CEC_VERSION 0.4.1 )
 
 find_package( EXPAT REQUIRED )
 include_directories( ${EXPAT_DIRECTORIES} )
