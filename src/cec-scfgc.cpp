@@ -18,6 +18,8 @@ public:
   ModifyGraph(GRCNode *top):top(top)
   {
     EnterGRC *et = dynamic_cast<EnterGRC *>(top);
+    if( ! et )
+        throw;
     assert(et);
 
     ReplaceNull2Nop(top);

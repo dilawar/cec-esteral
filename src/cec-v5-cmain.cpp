@@ -374,6 +374,8 @@ int main(int argc, char* argv[])
     if (basename.empty()) basename = m->symbol->name;
           
     SymbolTable *sig = dynamic_cast<AST::SymbolTable*>(m->signals);
+    if( ! sig )
+        throw;
     assert(sig);
       
     std::cout << do_esterel_v5_simulator(m, seed, cycles, basename);

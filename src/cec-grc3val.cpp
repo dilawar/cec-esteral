@@ -504,8 +504,15 @@ int main()
       GRCNode *top = gf->control_flow_graph;
 
       AST::SymbolTable *sigs = dynamic_cast<AST::SymbolTable*>((*i)->signals);
+      if( ! sigs )
+          throw;
+
       assert(sigs);
+
       AST::SymbolTable *vars = dynamic_cast<AST::SymbolTable*>((*i)->variables);
+      if( ! vars )
+          throw;
+
       assert(vars);
 
       //make contructive GRC
