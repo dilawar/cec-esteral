@@ -22,7 +22,7 @@ before_script:
 
 script:
     - mkdir -p _BUILD && cd _BUILD && cmake -DCMAKE_BUILD_TYPE=Release  ..
-    - make 
+    - make -j4
     - sudo make install
 
 after_success:
