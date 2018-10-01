@@ -10,13 +10,6 @@ notifications:
         on_success: change
         on_failure: always
 
-env:
-    - CTEST_MODEL=Nightly
-cache: apt
-
-matrix:
-    allow_failures:
-
 before_script:
     - sudo apt-get install -qq libexpat1-dev cmake
 
