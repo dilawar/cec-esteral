@@ -12,8 +12,6 @@ add_subdirectory( src )
 set(CMAKE_BUILD_TYPE Release)
 if( "${CMAKE_BUILD_TYPE}" STREQUAL "Release" )
     message( STATUS "Building for realease" )
-    add_definitions( -Wall -Werror )
-    add_definitions( -Wno-maybe-uninitialized -Wno-uninitialized )
     add_definitions( -std=c++11 )
 endif()
 
