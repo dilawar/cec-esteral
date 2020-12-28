@@ -13,6 +13,8 @@ make
 sudo make install 
 ```
 
+__It does not compile with clang. gcc works fine.__
+
 Packages  
 ========
 You can install it using my repository on Open Build Service https://software.opensuse.org/download.html?project=home%3Adilawar&package=cec
